@@ -59,16 +59,25 @@ def value_degree_correlation(mdp, value_function):
     correlation = np.corrcoef(degrees, value_function)[0, 1]
     return correlation
 
-for i in tqdm(range(10)):
-    mdp = SimpleMDP(n_states=100, k_rewards=1, exponent = 1.5)
-    value_functions = mdp.value_iteration(iterations = 6000)
-    correlations = list()
-    for i, value_function in enumerate(value_functions):
-        sorted_value_function = sorted(value_function)
-        correlation = value_degree_correlation(mdp, value_function)
-        correlations.append(correlation)
+def experiment(n_states, k_rewards, exponent, trials=10, iterations=6000):
+    print(f"Running experiment with {n_states} states, {k_rewards} rewards, and exponent {exponent}")
+    for i in tqdm(range(trials)):
+        mdp = SimpleMDP(n_states=n_states, k_rewards=k_rewards, exponent = exponent)
+        value_functions = mdp.value_iteration(iterations = iterations)
+        correlations = list()
+        for i, value_function in enumerate(value_functions):
+            sorted_value_function = sorted(value_function)
+            correlation = value_degree_correlation(mdp, value_function)
+            correlations.append(correlation)
 
-    plt.plot(correlations)
-plt.xlabel('Iterations')
-plt.ylabel('Correlation')
-plt.savefig('iterations_vs_value_degree_correlation.png')
+        plt.plot(correlations)
+    plt.title(f'Iterations vs. Value-Degree Correlation')
+    plt.xlabel('Iterations')
+    plt.ylabel('Correlation')
+    plt.savefig(f'iterations_vs_value_degree_correlation_states_{n_states}_rewards_{k_rewards}_exponent_{exponent}.png')
+    plt.close()
+
+experiment(n_states=100, k_rewards=1, exponent=1.5, trials=10)
+experiment(n_states=100, k_rewards=1, exponent=5, trials=10)
+experiment(n_states=1000, k_rewards=1, exponent=1.5, trials=10)
+experiment(n_states=100, k_rewards=10, exponent=1.5, trials=10)
