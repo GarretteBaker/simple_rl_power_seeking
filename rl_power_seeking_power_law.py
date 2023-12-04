@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 # set seed
 np.random.seed(500)
@@ -58,7 +59,7 @@ def value_degree_correlation(mdp, value_function):
     correlation = np.corrcoef(degrees, value_function)[0, 1]
     return correlation
 
-for i in range(5):
+for i in tqdm(range(10)):
     mdp = SimpleMDP(n_states=100, k_rewards=1, exponent = 1.5)
     value_functions = mdp.value_iteration(iterations = 6000)
     correlations = list()
