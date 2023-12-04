@@ -60,7 +60,7 @@ def value_degree_correlation(mdp, value_function):
 
 for i in range(5):
     mdp = SimpleMDP(n_states=100, k_rewards=1, exponent = 1.5)
-    value_functions = mdp.value_iteration(iterations = 1000)
+    value_functions = mdp.value_iteration(iterations = 6000)
     correlations = list()
     for i, value_function in enumerate(value_functions):
         sorted_value_function = sorted(value_function)
