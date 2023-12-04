@@ -58,17 +58,16 @@ def value_degree_correlation(mdp, value_function):
     correlation = np.corrcoef(degrees, value_function)[0, 1]
     return correlation
 
-mdp = SimpleMDP(n_states=100, k_rewards=1, exponent = 3)
-value_functions = mdp.value_iteration(iterations = 1000)
+for i in range(5):
+    mdp = SimpleMDP(n_states=100, k_rewards=1, exponent = 1.5)
+    value_functions = mdp.value_iteration(iterations = 1000)
+    correlations = list()
+    for i, value_function in enumerate(value_functions):
+        sorted_value_function = sorted(value_function)
+        correlation = value_degree_correlation(mdp, value_function)
+        correlations.append(correlation)
 
-
-correlations = list()
-for i, value_function in enumerate(value_functions):
-    sorted_value_function = sorted(value_function)
-    correlation = value_degree_correlation(mdp, value_function)
-    correlations.append(correlation)
-
-plt.plot(correlations)
+    plt.plot(correlations)
 plt.xlabel('Iterations')
 plt.ylabel('Correlation')
-plt.show()
+plt.savefig('iterations_vs_value_degree_correlation.png')
